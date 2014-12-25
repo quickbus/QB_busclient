@@ -7,6 +7,9 @@ import java.util.Map;
 import org.apache.http.impl.client.DefaultHttpClient;
 //import org.json.JSONException;
 
+
+
+
 //import android.R.color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -15,6 +18,7 @@ import android.os.Message;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.view.KeyEvent;
 //import android.graphics.Color;
 import android.view.Menu;
 import android.view.View;
@@ -23,20 +27,27 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
+
 import java.lang.ref.WeakReference;
+
+import android.content.SharedPreferences;
 
 public class MainActivity extends Activity implements OnClickListener 
 {
+	SharedPreferences preferences_config;
+	SharedPreferences.Editor editor_config;
 	
 	Map<String,String> params;
 	EditText txt1;
 	EditText txt2;
 //	EditText txtUrl;
 	Button btn;
+	Button btn_q;
 	String res;
 	ProgressBar pb;
 	List<Map<String,Object>> ml;
 	ImageButton imgB;
+	String username_initial="";
 	
 	MainHandler hdl;
    // private static final int UPDATE_UI = 0;
@@ -64,7 +75,7 @@ public class MainActivity extends Activity implements OnClickListener
 					//StringBuilder sb=new StringBuilder();
 					theActivity.ml=Share.lstRoutes;
 					
-	                Intent intent = new Intent(theActivity, RouteActivity.class); 
+	                Intent intent = new Intent(theActivity, FuncSelectTabActivity.class); 
 	                theActivity.startActivity(intent); 
 	                break;
                 }
@@ -110,8 +121,9 @@ public class MainActivity extends Activity implements OnClickListener
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		AppManager.getAppManager().addActivity(this);
 		
-		
+		preferences_config=getSharedPreferences("QB_busclient_config", MODE_PRIVATE);
 
 		txt1=(EditText) findViewById(R.id.editText1);
 		txt2=(EditText) findViewById(R.id.editText2);
@@ -124,12 +136,30 @@ public class MainActivity extends Activity implements OnClickListener
 		hdl=new MainHandler(this);
 		
 		btn=(Button) findViewById(R.id.button1);
+		btn_q=(Button) findViewById(R.id.button2);
 		//btn.setBackgroundColor(Color.rgb(60, 200, 150));
 		btn.setOnClickListener(this);
+		btn_q.setOnClickListener(this);
 		imgB.setOnClickListener(this);
 		
-		txt1.setText("");
+		username_initial=preferences_config.getString("username", "");
+		
+		txt1.setText(username_initial);
 		txt2.setText("");
+	}
+	
+	public boolean onKeyDown(int keyCode, KeyEvent event) 
+	{
+	        if(keyCode==KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0)
+	        {
+	        	AppManager.getAppManager().AppExit(this);
+	        	return true;
+	        }
+//	        else if(keyCode==KeyEvent.KEYCODE_HOME && event.getRepeatCount() == 0)
+//	        {
+//	        	return true;
+//	        }
+	        return super.onKeyDown(keyCode, event);
 	}
 
 	@Override
@@ -150,10 +180,18 @@ public class MainActivity extends Activity implements OnClickListener
 			case R.id.button1:
 		    {
 		    	initShare();
+		    	editor_config=preferences_config.edit();
+		    	editor_config.putString("username", params.get("data[User][username]"));
+		    	editor_config.commit();
 				Share.getStatus();
 				pb.setVisibility(1);
 				//pb.animate();
 				this.btn.setEnabled(false);
+				break;
+		    }
+			case R.id.button2:
+		    {
+		    	AppManager.getAppManager().AppExit(this);
 				break;
 		    }
 		     //Toast.makeText(MainActivity.this, "°´Å¥1±»µ¥»÷", Toast.LENGTH_LONG).show();

@@ -13,6 +13,7 @@ import org.json.JSONObject;
 public class JSONPaser 
 {
 	static public ArrayList<String> aryRoutines;
+	public static final int Max_Route_Num=100;
 	
 	public JSONPaser()
 	{
@@ -24,15 +25,41 @@ public class JSONPaser
 
 		List<Map<String,Object>>  list = new ArrayList<Map<String, Object>>(); 			
 		JSONObject item = new JSONObject(response);
-		Map<String,Object> map = new HashMap<String, Object>(); // 存放到MAP里面
-		Iterator<?> keys = item.keys();
+		Iterator<?> it = item.keys();
+		String[] line_id = new String[Max_Route_Num];
+		int route_num=0;
+		int i,j;
+		String temp;
 		
-		while(keys.hasNext())
+		while(it.hasNext())
 		{	
-			String line_id = (String)keys.next();
+			if(route_num < Max_Route_Num)
+			{
+				line_id[route_num] = (String)it.next();
+				route_num++;
+			}
+			
+		}
+		
+		for(j=0;j<route_num-1;j++)
+		{
+			for(i=j+1;i<route_num;i++)
+			{
+				if(Integer.parseInt(line_id[j])>Integer.parseInt(line_id[i]))//数组元素大小按升序排列           
+				{                 
+					temp=line_id[j];                 
+					line_id[j]=line_id[i];                 
+					line_id[i]=temp;
+				}         
+			} 
+		}
+		
+		for(j=0;j<route_num;j++)
+		{
+			Map<String,Object> map = new HashMap<String, Object>(); // 存放到MAP里面
 			map.put("pic", R.drawable.qb_busclient);
-			map.put("id", line_id);
-			map.put("name", (String)(item.getString(line_id)));
+			map.put("id", line_id[j]);
+			map.put("name", (String)(item.get(line_id[j])));
 			list.add(map);
 		}
 			
