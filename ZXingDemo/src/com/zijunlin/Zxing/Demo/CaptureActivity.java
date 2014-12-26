@@ -1,5 +1,5 @@
 package com.zijunlin.Zxing.Demo;
-!
+
 import java.io.IOException;
 import java.util.Vector;
 
