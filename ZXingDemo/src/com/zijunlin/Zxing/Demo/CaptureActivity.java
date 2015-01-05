@@ -45,7 +45,7 @@ public class CaptureActivity extends Activity implements Callback {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
-		//³õÊ¼»¯ CameraManager
+		//Â³ÃµÃŠÂ¼Â»Â¯ CameraManager
 		CameraManager.init(getApplication());
 
 		viewfinderView = (ViewfinderView) findViewById(R.id.viewfinder_view);
