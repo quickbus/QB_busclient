@@ -147,6 +147,11 @@ public class CaptureActivity extends Activity implements Callback {
 		 playBeepSoundAndVibrate();
 		txtResult.setText(obj.getBarcodeFormat().toString() + ":"
 				+ obj.getText());
+		Intent i=new Intent();
+		i.putExtra("user", obj.getText());
+		setResult(0,i);
+		
+		finish();	
 	}
 
 	private void initBeepSound() {

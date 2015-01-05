@@ -1,8 +1,10 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:mySwitch="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".GpsActivity"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent" >
+    android:layout_height="fill_parent" 
+    android:background = "@drawable/gps_background" >
 <HorizontalScrollView 
     android:layout_width="fill_parent"
     android:layout_height="wrap_content" >
@@ -53,18 +55,37 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/textView1"
         android:layout_marginLeft="20dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="35dp"
+        android:paddingBottom="35dp"
         android:text="启动更新： "
         android:textSize="18dp" />
 
-    <ToggleButton
+<!--     <ToggleButton
         android:id="@+id/toggleButton1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/textView3"
         android:layout_alignBottom="@+id/textView3"
         android:layout_alignLeft="@+id/textView2"
-        android:text="ToggleButton" />
+        android:text="ToggleButton"
+        style="@style/SwitchText" /> -->
+    
+    <com.example.qb_busclient.MySwitch
+       style="@style/mySwitchStyle"
+       android:id="@+id/pickup2"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:layout_alignBottom="@+id/textView3"
+       android:layout_alignLeft="@+id/textView2"
+       mySwitch:textOnThumb="false"
+       mySwitch:thumbExtraMovement="19dp"
+       mySwitch:thumb="@drawable/rswitch_button_small"
+       mySwitch:track="@drawable/rgroove_copy"
+       mySwitch:backgroundMask="@drawable/rgroove_mask"
+       mySwitch:leftBackground="@drawable/green_drawable"
+       mySwitch:rightBackground="@drawable/red_drawable"
+       mySwitch:textOn="关"
+       mySwitch:textOff="开"  />
     
     <TextView
         android:id="@+id/textView4"
@@ -72,7 +93,7 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/textView3"
         android:layout_below="@+id/textView3"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="30dp"
         android:text="GPS状态： "
         android:textSize="15dp" />
     
