@@ -56,7 +56,7 @@
         		android:layout_width="wrap_content"
         		android:layout_height="wrap_content"
         		android:layout_marginTop="20dp"
-        		android:text="线路列表"
+        		android:text="点击选线"
         		android:textSize="24dp"
         		android:layout_gravity="center"
         		android:textAppearance="?android:attr/textAppearanceLarge" />    

@@ -11,9 +11,11 @@ import android.os.Bundle;
 //import android.app.Activity;
 import android.app.TabActivity;
 import android.content.Intent;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
+import android.view.View.OnClickListener;
 //import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -30,14 +32,42 @@ import android.widget.TextView;
 public class FuncSelectTabActivity extends TabActivity 
 {
 
+	private static final String TAG = "yank";
 	SimpleAdapter adapter ;
 	private ListView lstV;
+	TextView tvbarCode;
 	MySwitch bn1;
 	TextView tv1;
 	MySwitch bn2;
 	TextView tv2;
 	MySwitch bn3;
 	TextView tv3;
+	@Override
+	protected void onActivityResult(int requestCode,int resultCode, Intent data)
+	{
+			try 
+			{
+				super.onActivityResult(requestCode, resultCode, data);
+				String uid=data.getStringExtra("user");
+				
+				Share.route_sel_id=uid;
+				Log.d(TAG, "ID: ="+Share.route_sel_id);
+				Thread.sleep(300);
+			} 
+			catch (InterruptedException e) 
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			finally
+			{
+				Intent intent = new Intent(FuncSelectTabActivity.this, GpsActivity.class); 
+				startActivity(intent); 
+			} 
+			
+	     	
+	}
+	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
@@ -61,6 +91,15 @@ public class FuncSelectTabActivity extends TabActivity
 		tabHost.addTab(tab2);
 		
 		tabHost.setCurrentTab(0);
+		
+		tvbarCode=(TextView)findViewById(R.id.textView1);
+		tvbarCode.setOnClickListener(new OnClickListener(){
+        	public void onClick(View v)
+        	{
+        		Intent intent = new Intent("com.qb.action.BARCODE");
+        		startActivityForResult(intent,1); 
+        	}
+        });
 		
 		tv1=(TextView)findViewById(R.id.textView2);
 		tv1.setText("");
@@ -135,6 +174,7 @@ public class FuncSelectTabActivity extends TabActivity
 				new int[] { R.id.pic, R.id.title, R.id.message});
 		lstV.setAdapter(adapter);
 		lstV.setOnItemClickListener(new OnItemClickListenerImpl());
+		lstV.setVisibility(-1);
 	}
 	
 	private class OnItemClickListenerImpl implements OnItemClickListener 
@@ -144,6 +184,8 @@ public class FuncSelectTabActivity extends TabActivity
 //		@SuppressWarnings("unchecked")
 	
 	
+
+		private static final String TAG = "qb_rid";
 
 		@Override
 		public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) 
@@ -157,6 +199,7 @@ public class FuncSelectTabActivity extends TabActivity
 			//id_sel.getChars(0, end, buffer, index)
 			//tv.setText(id_sel2);
 			Share.route_sel_id=id_sel2;
+			Log.d(TAG, "ID: ="+Share.route_sel_id);
 			try 
 			{
 				Thread.sleep(300);
